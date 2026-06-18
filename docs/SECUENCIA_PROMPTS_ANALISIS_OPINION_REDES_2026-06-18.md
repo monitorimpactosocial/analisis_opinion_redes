@@ -54,3 +54,17 @@ Respuesta operativa:
 - `/me/permissions` mostro `pages_show_list`, `business_management`, `pages_read_engagement` y `public_profile`.
 - `/me/businesses` devolvio lista vacia.
 - Diagnostico: falta acceso efectivo a una Pagina o regenerar token incluyendo `pages_read_user_content`; aun no se puede ejecutar `collect` real.
+
+## Prompt 6
+
+El usuario confirmo que `/me/accounts?fields=id,name,tasks,access_token` ya devuelve la Pagina `Monitorimpactosocial`.
+
+Respuesta operativa:
+- Se cargo `META_PAGE_ID=1166992559831697` en `.env` local.
+- Se cargo el Page access token en `.env` local sin imprimirlo ni commitearlo.
+- Se corrigio el cliente Meta para leer `tasks` en vez de `perms`.
+- `list-pages` devolvio `Monitorimpactosocial`.
+- `collect` real ejecuto sin error, pero devolvio 0 comentarios.
+- Diagnostico directo: la pagina es visible para la API, pero `/posts` no devuelve publicaciones visibles.
+- Se registraron la ejecucion real, metricas cero y evidencias en Google Sheet/Drive.
+- Pendiente: publicar una publicacion de prueba con comentario y repetir la corrida; regenerar token final porque hubo tokens expuestos.

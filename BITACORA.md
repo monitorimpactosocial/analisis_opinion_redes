@@ -105,3 +105,39 @@ Pendiente:
 - Regenerar el token en Graph API Explorer con `pages_show_list`, `pages_read_engagement` y `pages_read_user_content`.
 - Confirmar que `/me/accounts?fields=id,name,tasks` devuelva al menos una Pagina.
 - Luego completar `META_PAGE_ID` en `.env` y ejecutar `collect`.
+
+## 2026-06-18 - Primera corrida real con Pagina Monitorimpactosocial
+
+Accion:
+- Se confirmo que `/me/accounts?fields=id,name,tasks,access_token` ya devuelve la Pagina `Monitorimpactosocial`.
+- `META_PAGE_ID` cargado localmente: `1166992559831697`.
+- `META_PAGE_ACCESS_TOKEN` cargado en `.env` local sin imprimirlo.
+- Se corrigio `src/analisis_opinion_redes/meta_client.py` para usar `tasks` en lugar de `perms`, porque Meta devolvio error `(#100) Tried accessing nonexisting field (perms)`.
+
+Pruebas ejecutadas:
+- `python -m compileall src tests`: OK.
+- `$env:PYTHONPATH='src'; python -m unittest discover -s tests`: OK, 3 tests.
+- `$env:PYTHONPATH='src'; python -m analisis_opinion_redes.cli validate-config`: OK, `meta_ready=true`.
+- `$env:PYTHONPATH='src'; python -m analisis_opinion_redes.cli list-pages`: OK, devuelve `Monitorimpactosocial`.
+- `$env:PYTHONPATH='src'; python -m analisis_opinion_redes.cli collect`: OK, `run_id=collect_20260618T201156Z`, 0 comentarios.
+- `$env:PYTHONPATH='src'; $env:META_SINCE_DAYS='365'; python -m analisis_opinion_redes.cli collect`: OK, `run_id=collect_20260618T201224Z`, 0 comentarios.
+
+Diagnostico API:
+- Pagina visible para el token: `Monitorimpactosocial`.
+- Consulta directa a la pagina: `posts_returned=0`.
+- No hay comentarios para analizar porque la API no devuelve publicaciones visibles.
+
+Google Sheet:
+- Se agrego la ejecucion `collect_20260618T201224Z` en `EJECUCIONES`.
+- Se agrego metrica cero en `METRICAS_DIARIAS`.
+- Se agrego diagnostico `no_posts_visible` en `ERRORES`.
+
+Evidencias Drive:
+- CSV real: `https://drive.google.com/file/d/1tfRfRjZII_Sj2bxTos95XR8Ofd9_DBcN/view?usp=drivesdk`.
+- Metricas reales: `https://drive.google.com/file/d/1uYhES1nPmbr3VHi7w5aP0ZjNOrvBe7j2/view?usp=drivesdk`.
+- Resumen real: `https://drive.google.com/file/d/1t2W6n3fIqd-8IH1mR9OB_0dGcoxZhcVm/view?usp=drivesdk`.
+
+Pendiente:
+- Publicar una publicacion de prueba en la Pagina `Monitorimpactosocial` y dejar al menos un comentario.
+- Repetir `collect` para validar descarga y analisis de comentario real.
+- Regenerar el Page token final porque tokens previos fueron expuestos en capturas/chat.

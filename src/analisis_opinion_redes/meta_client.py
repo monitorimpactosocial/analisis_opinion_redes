@@ -59,14 +59,14 @@ class MetaClient:
     def list_pages(self) -> list[dict[str, Any]]:
         pages = self._paginate(
             "me/accounts",
-            {"fields": "id,name,perms,category", "limit": 100},
+            {"fields": "id,name,tasks,category", "limit": 100},
         )
         return [
             {
                 "id": page.get("id", ""),
                 "name": page.get("name", ""),
                 "category": page.get("category", ""),
-                "perms": page.get("perms", []),
+                "tasks": page.get("tasks", []),
             }
             for page in pages
         ]
@@ -135,4 +135,3 @@ class MetaClient:
 
 def hash_identifier(value: str, salt: str) -> str:
     return hashlib.sha256(f"{salt}:{value}".encode("utf-8")).hexdigest()
-
