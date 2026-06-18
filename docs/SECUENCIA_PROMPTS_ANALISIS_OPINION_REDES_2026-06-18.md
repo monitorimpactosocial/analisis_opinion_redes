@@ -40,4 +40,5 @@ Respuesta operativa:
 - Se agrego portada en la raiz del repo.
 - Se agrego indice en `docs/index.html`.
 - Se agrego `docs/404.html` y alias `docs/docs/index.html` para cubrir rutas comunes.
-- Se dejo pendiente verificar la URL publica luego del push y la propagacion de GitHub Pages.
+- Se verifico que los HTML existen en `main` por raw GitHub con HTTP 200.
+- La URL `monitorimpactosocial.github.io/analisis_opinion_redes/` seguia en HTTP 404, por lo que falta habilitar/configurar GitHub Pages o esperar activacion.

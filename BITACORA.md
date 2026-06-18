@@ -70,3 +70,15 @@ Cambios:
 Verificacion prevista:
 - `git status --branch --short`.
 - Publicar commit y revalidar `https://monitorimpactosocial.github.io/analisis_opinion_redes/` y `https://monitorimpactosocial.github.io/analisis_opinion_redes/docs/` tras propagacion de GitHub Pages.
+
+Verificacion ejecutada:
+- Commit publicado: `3aab6ac1db507721926fb2d3109e326a89a478e5`.
+- `git rev-parse HEAD` coincide con `git rev-parse origin/main`.
+- `https://raw.githubusercontent.com/monitorimpactosocial/analisis_opinion_redes/main/index.html`: HTTP 200.
+- `https://raw.githubusercontent.com/monitorimpactosocial/analisis_opinion_redes/main/docs/index.html`: HTTP 200.
+- `https://monitorimpactosocial.github.io/analisis_opinion_redes/?v=3aab6ac`: HTTP 404.
+- `https://monitorimpactosocial.github.io/analisis_opinion_redes/docs/?v=3aab6ac`: HTTP 404.
+
+Diagnostico:
+- El contenido necesario ya esta en `main`.
+- La URL publica todavia requiere habilitar/configurar GitHub Pages para este repositorio o esperar su activacion.
