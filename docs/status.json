@@ -1,0 +1,78 @@
+{
+  "generated_at_utc": "2026-06-18T20:12:27Z",
+  "scope_note": "Este tablero reporta la Pagina de Facebook conectada por API. El perfil personal no es accesible por la API oficial; para sitio web se requiere conectar GA4/Search Console.",
+  "meta_page": {
+    "id": "1166992559831697",
+    "name": "Monitorimpactosocial",
+    "api_status": "API visible"
+  },
+  "profile": {
+    "status": "no_disponible_por_api",
+    "detail": "Meta Graph API no permite extraer comentarios diarios de un perfil personal comun como si fuera una Pagina."
+  },
+  "website": {
+    "status": "Pendiente",
+    "detail": "Para visitas, clicks y trafico web hay que conectar GA4, Search Console o logs del sitio."
+  },
+  "latest_run": {
+    "run_id": "collect_20260618T201224Z",
+    "timestamp_utc": "2026-06-18T20:12:27Z",
+    "source": "collect",
+    "status": "ok",
+    "posts_visible": 0,
+    "comments_total": 0,
+    "alerts_total": 0
+  },
+  "sentiment": {
+    "total": 0,
+    "positivo": 0,
+    "neutro": 0,
+    "negativo": 0
+  },
+  "categories": [],
+  "trend": [
+    {
+      "date": "2026-06-18",
+      "comments_total": 0,
+      "positivo": 0,
+      "neutro": 0,
+      "negativo": 0,
+      "alerts_total": 0
+    }
+  ],
+  "alerts": [],
+  "comments": [],
+  "diagnostic": {
+    "title": "La conexion con Meta funciona",
+    "detail": "La pagina Monitorimpactosocial ya es visible para la API. La corrida real no trajo comentarios porque la API no devolvio publicaciones visibles."
+  },
+  "next_step": {
+    "title": "Publicar post de prueba",
+    "detail": "Crear una publicacion en la pagina Monitorimpactosocial, dejar al menos un comentario y repetir la corrida collect."
+  },
+  "destinations": {
+    "spreadsheet_url": "https://docs.google.com/spreadsheets/d/19qCi8dMDZa89OrZhUth5EhQ0qvkrup6PaqTN3BN7NCc/edit",
+    "drive_folder_url": "https://drive.google.com/drive/folders/1RGaWR4DJLrjHRNOoDEw7tdELaAYACcLd"
+  },
+  "evidence": [
+    {
+      "type": "CSV",
+      "file_name": "collect_20260618T201224Z_comentarios.csv",
+      "sha256": "B831D6D2A61E3E8B72DA0C6A373EBB08AA2E46DBD4E30D444ED17B366DA9EFDD",
+      "url": "https://drive.google.com/file/d/1tfRfRjZII_Sj2bxTos95XR8Ofd9_DBcN/view?usp=drivesdk"
+    },
+    {
+      "type": "Metricas",
+      "file_name": "collect_20260618T201224Z_metricas.json",
+      "sha256": "1033A19CAEE0B84D86D79D3A7573BF0937BB5B381BAEEE3F7E377A41C9AFA8AF",
+      "url": "https://drive.google.com/file/d/1uYhES1nPmbr3VHi7w5aP0ZjNOrvBe7j2/view?usp=drivesdk"
+    },
+    {
+      "type": "Resumen",
+      "file_name": "collect_20260618T201224Z_evidencia.md",
+      "sha256": "5FD9B82EC006FFC027357454816608D17C30060151F39D0B125FC2D39A6D298D",
+      "url": "https://drive.google.com/file/d/1t2W6n3fIqd-8IH1mR9OB_0dGcoxZhcVm/view?usp=drivesdk"
+    }
+  ],
+  "security_note": "No contiene tokens, passwords ni identificadores crudos de autores."
+}

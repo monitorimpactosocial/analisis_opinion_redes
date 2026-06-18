@@ -240,6 +240,10 @@ def run_pipeline(source: str, settings: Settings, sample_path: Path | None = Non
 
     analyzed = analyze_comments(comments)
     artifacts = write_local_outputs(run_id, analyzed, settings)
+    from .dashboard_export import build_public_status, write_public_status
+
+    dashboard_status = build_public_status(run_id, source, analyzed, artifacts, settings)
+    write_public_status(settings.dashboard_status_path, dashboard_status)
     google_notes: list[str] = []
     if write_google or settings.write_google:
         google_notes = write_google_outputs(run_id, source, analyzed, artifacts, settings)
@@ -252,4 +256,3 @@ def run_pipeline(source: str, settings: Settings, sample_path: Path | None = Non
         "artifacts": {key: str(value) for key, value in artifacts.items()},
         "google_notes": google_notes,
     }
-

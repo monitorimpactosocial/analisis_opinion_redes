@@ -13,8 +13,25 @@ Ensayo operativo para descargar comentarios diarios desde Meta Graph API, analiz
 - Comentarios de publicaciones de pagina, no scraping ni login automatizado.
 - Analisis simple: sentimiento, tema, urgencia y necesidad de respuesta.
 - Persistencia local en `outputs/` y opcional en Google Sheets/Drive.
+- Tablero publico en GitHub Pages alimentado por `docs/status.json`.
 
 Importante: una cuenta personal de Facebook puede servir para autorizar OAuth si administra la pagina, pero la API oficial no debe usarse como un robot con password personal. Para perfiles personales, la lectura automatica de comentarios esta muy restringida; el ensayo esta preparado para paginas.
+
+## Tablero GitHub Pages
+
+La URL publica muestra un tablero operativo con:
+
+- KPIs de comentarios, positivos, negativos, neutros y alertas.
+- Graficas de sentimiento, categorias y tendencia diaria.
+- Tabla de alertas y comentarios recientes.
+- Enlaces al Google Sheet, Drive de evidencias, repositorio y estado JSON.
+
+El tablero no guarda tokens ni contrasenas. Se actualiza desde `docs/status.json`, generado por cada corrida del pipeline.
+
+Limitaciones actuales:
+
+- El perfil personal no se puede monitorear como si fuera una Pagina mediante la API oficial.
+- Para trafico de una pagina web real se necesita conectar GA4, Search Console o logs del sitio.
 
 ## Instalacion local
 
@@ -56,6 +73,8 @@ python -m analisis_opinion_redes.cli list-pages
 python -m analisis_opinion_redes.cli collect --write-google
 ```
 
+Cada corrida tambien actualiza `docs/status.json` para alimentar el tablero publico. Para publicar el tablero actualizado en GitHub Pages hay que commitear y pushear ese JSON junto con cualquier cambio de codigo o documentacion.
+
 ## Estructura de Google Sheet
 
 El workbook se organiza en estas pestanas:
@@ -74,4 +93,3 @@ El workbook se organiza en estas pestanas:
 - Usar `ANONYMIZATION_SALT` local para hashear IDs de autores.
 - `STORE_AUTHOR_NAME=false` por defecto.
 - Revisar las politicas de Meta antes de pasar de ensayo a produccion.
-

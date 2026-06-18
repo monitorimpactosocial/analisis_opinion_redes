@@ -68,3 +68,14 @@ Respuesta operativa:
 - Diagnostico directo: la pagina es visible para la API, pero `/posts` no devuelve publicaciones visibles.
 - Se registraron la ejecucion real, metricas cero y evidencias en Google Sheet/Drive.
 - Pendiente: publicar una publicacion de prueba con comentario y repetir la corrida; regenerar token final porque hubo tokens expuestos.
+
+## Prompt 7
+
+El usuario aclaro que necesita un tablero que reporte todo sobre su pagina/perfil: opiniones, positivos, negativos, graficas y tablas.
+
+Respuesta operativa:
+- Se reconocio que la pagina anterior solo era una portada documental.
+- Se transformo GitHub Pages en tablero operativo con KPIs, graficas y tablas.
+- Se agrego `docs/status.json` como fuente publica sin secretos.
+- Se agrego exportador Python para regenerar el JSON desde cada corrida.
+- Se aclaro que el perfil personal no es accesible como Pagina por Meta API; el tablero actual cubre la Pagina de Facebook y deja sitio web/GA4 como fuente pendiente.

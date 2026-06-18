@@ -141,3 +141,22 @@ Pendiente:
 - Publicar una publicacion de prueba en la Pagina `Monitorimpactosocial` y dejar al menos un comentario.
 - Repetir `collect` para validar descarga y analisis de comentario real.
 - Regenerar el Page token final porque tokens previos fueron expuestos en capturas/chat.
+
+## 2026-06-18 - Conversion de GitHub Pages en tablero operativo
+
+Problema reportado:
+- La pagina publica funcionaba, pero solo era una portada de documentacion y no un tablero util.
+- El usuario necesita KPIs, graficas, tablas y conteos de opiniones positivas/negativas sobre su Pagina.
+
+Cambios:
+- `index.html` se reemplazo por un tablero operativo.
+- `docs/dashboard.js` ahora renderiza KPIs, dona de sentimiento, barras de categorias, tendencia diaria, tabla de alertas, tabla de comentarios y evidencias.
+- `docs/status.json` queda como fuente publica de datos del tablero, sin tokens ni autores crudos.
+- Se agrego `src/analisis_opinion_redes/dashboard_export.py` para generar el JSON del tablero desde cada corrida.
+- `src/analisis_opinion_redes/pipeline.py` ahora exporta `docs/status.json`.
+- `.env.example` incluye `META_PAGE_NAME` y `DASHBOARD_STATUS_PATH`.
+
+Alcance aclarado:
+- El tablero reporta la Pagina de Facebook conectada por API.
+- El perfil personal no se puede monitorear como Pagina mediante Meta Graph API.
+- Para metricas de sitio web se debe conectar GA4, Search Console o logs del sitio.

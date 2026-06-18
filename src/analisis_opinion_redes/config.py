@@ -47,6 +47,8 @@ class Settings:
     google_spreadsheet_id: str
     google_drive_folder_id: str
     write_google: bool
+    meta_page_name: str
+    dashboard_status_path: Path
     output_dir: Path
     evidence_dir: Path
 
@@ -72,10 +74,11 @@ class Settings:
                 "1RGaWR4DJLrjHRNOoDEw7tdELaAYACcLd",
             ),
             write_google=env_bool("WRITE_GOOGLE", False),
+            meta_page_name=os.getenv("META_PAGE_NAME", ""),
+            dashboard_status_path=Path(os.getenv("DASHBOARD_STATUS_PATH", "docs/status.json")),
             output_dir=Path(os.getenv("OUTPUT_DIR", "outputs")),
             evidence_dir=Path(os.getenv("EVIDENCE_DIR", "evidence")),
         )
 
     def meta_ready(self) -> bool:
         return bool(self.meta_access_token and self.meta_page_id)
-

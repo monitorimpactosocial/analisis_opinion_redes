@@ -3,42 +3,202 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Analisis de opinion en redes</title>
-  <meta name="description" content="Ensayo operativo para analizar comentarios de Facebook e Instagram con Meta Graph API.">
+  <title>Tablero - Analisis de opinion en redes</title>
+  <meta name="description" content="Tablero operativo de comentarios, opinion y alertas para redes sociales.">
   <link rel="stylesheet" href="docs/site.css">
 </head>
 <body>
   <main class="shell">
-    <header class="hero">
-      <p class="eyebrow">Ensayo operativo</p>
-      <h1>Analisis de opinion en redes</h1>
-      <p class="lead">Pipeline inicial para descargar comentarios con APIs oficiales, clasificarlos y registrar resultados en Google Sheets y Drive.</p>
+    <header class="hero dashboard-hero">
+      <div>
+        <p class="eyebrow">Tablero operativo</p>
+        <h1>Analisis de opinion en redes</h1>
+        <p class="lead">Monitoreo de comentarios, sentimiento, temas, alertas y evidencias. La extraccion real corre con Meta Graph API y credenciales locales; esta vista publica no contiene tokens.</p>
+      </div>
+      <aside class="run-badge" aria-label="Ultima corrida">
+        <span>Ultima corrida</span>
+        <strong id="latest-run-id">Sin datos</strong>
+        <small id="latest-run-time">Pendiente</small>
+      </aside>
     </header>
 
-    <section class="status-grid" aria-label="Estado del ensayo">
+    <section class="notice" aria-label="Alcance del tablero">
+      <strong>Alcance actual</strong>
+      <span id="scope-note">Este tablero reporta la Pagina de Facebook conectada por API. El perfil personal no es accesible por la API oficial; para sitio web se requiere conectar GA4/Search Console.</span>
+    </section>
+
+    <section class="status-grid" aria-label="Indicadores principales">
       <article>
-        <span>Estado</span>
-        <strong>Preparado</strong>
+        <span>Pagina Meta</span>
+        <strong id="page-name">Monitorimpactosocial</strong>
+        <small id="page-status">API visible</small>
       </article>
       <article>
-        <span>Fuente inicial</span>
-        <strong>Facebook Pages</strong>
+        <span>Comentarios</span>
+        <strong id="comments-total">0</strong>
+        <small>ultima corrida</small>
       </article>
       <article>
-        <span>Seguridad</span>
-        <strong>OAuth, sin passwords</strong>
+        <span>Positivos</span>
+        <strong id="positive-total">0</strong>
+        <small id="positive-percent">0%</small>
+      </article>
+      <article>
+        <span>Negativos</span>
+        <strong id="negative-total">0</strong>
+        <small id="negative-percent">0%</small>
+      </article>
+      <article>
+        <span>Neutros</span>
+        <strong id="neutral-total">0</strong>
+        <small id="neutral-percent">0%</small>
+      </article>
+      <article>
+        <span>Alertas</span>
+        <strong id="alerts-total">0</strong>
+        <small>requieren seguimiento</small>
+      </article>
+      <article>
+        <span>Publicaciones visibles</span>
+        <strong id="posts-visible">0</strong>
+        <small>devueltas por API</small>
+      </article>
+      <article>
+        <span>Fuente web</span>
+        <strong id="website-status">Pendiente</strong>
+        <small>GA4/Search Console</small>
       </article>
     </section>
 
-    <section class="links" aria-label="Documentacion">
+    <section class="dashboard-grid" aria-label="Graficas">
+      <article class="panel">
+        <div class="section-heading compact">
+          <p class="eyebrow">Opinion</p>
+          <h2>Sentimiento</h2>
+        </div>
+        <div class="sentiment-layout">
+          <div class="donut" id="sentiment-donut" aria-label="Distribucion de sentimiento"></div>
+          <div class="legend" id="sentiment-legend"></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="section-heading compact">
+          <p class="eyebrow">Temas</p>
+          <h2>Categorias principales</h2>
+        </div>
+        <div class="bars" id="category-bars"></div>
+      </article>
+
+      <article class="panel wide">
+        <div class="section-heading compact">
+          <p class="eyebrow">Tendencia</p>
+          <h2>Comentarios por dia</h2>
+        </div>
+        <div class="trend" id="trend-chart"></div>
+      </article>
+    </section>
+
+    <section class="workbench" aria-label="Diagnostico y acciones">
+      <article class="panel">
+        <p class="eyebrow">Diagnostico</p>
+        <h2 id="diagnostic-title">Esperando datos reales</h2>
+        <p id="diagnostic-detail">La pagina esta conectada, pero todavia no hay comentarios visibles para analizar.</p>
+      </article>
+      <article class="panel next-step">
+        <p class="eyebrow">Siguiente paso</p>
+        <h2 id="next-step-title">Generar comentarios de prueba</h2>
+        <p id="next-step-detail">Publicar un post en la pagina conectada, dejar un comentario y repetir la corrida collect.</p>
+      </article>
+    </section>
+
+    <section class="table-section" aria-label="Alertas recientes">
+      <div class="section-heading">
+        <p class="eyebrow">Seguimiento</p>
+        <h2>Alertas y comentarios que requieren respuesta</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Categoria</th>
+              <th>Urgencia</th>
+              <th>Sentimiento</th>
+              <th>Comentario</th>
+              <th>Enlace</th>
+            </tr>
+          </thead>
+          <tbody id="alerts-body">
+            <tr><td colspan="6">Sin alertas reales en la ultima corrida.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="table-section" aria-label="Comentarios recientes">
+      <div class="section-heading">
+        <p class="eyebrow">Detalle</p>
+        <h2>Comentarios recientes</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Red</th>
+              <th>Categoria</th>
+              <th>Sentimiento</th>
+              <th>Puntaje</th>
+              <th>Comentario</th>
+              <th>Post</th>
+            </tr>
+          </thead>
+          <tbody id="comments-body">
+            <tr><td colspan="7">Sin comentarios reales en la ultima corrida.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="links action-links" aria-label="Accesos operativos">
+      <a class="primary-link" href="https://docs.google.com/spreadsheets/d/19qCi8dMDZa89OrZhUth5EhQ0qvkrup6PaqTN3BN7NCc/edit">Abrir Google Sheet</a>
+      <a href="https://drive.google.com/drive/folders/1RGaWR4DJLrjHRNOoDEw7tdELaAYACcLd">Abrir evidencias Drive</a>
+      <a href="https://github.com/monitorimpactosocial/analisis_opinion_redes">Repositorio GitHub</a>
+      <a href="docs/status.json">Estado JSON</a>
+    </section>
+
+    <section class="table-section" aria-label="Evidencias recientes">
+      <div class="section-heading">
+        <p class="eyebrow">Evidencias</p>
+        <h2>Archivos de la ultima corrida</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Archivo</th>
+              <th>SHA256</th>
+              <th>Enlace</th>
+            </tr>
+          </thead>
+          <tbody id="evidence-body">
+            <tr><td colspan="4">Sin evidencias cargadas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="links secondary-links" aria-label="Documentacion">
       <a href="docs/manual_tecnico.md">Manual tecnico</a>
       <a href="docs/setup_meta.md">Credenciales Meta</a>
       <a href="docs/setup_google.md">Credenciales Google</a>
       <a href="docs/diccionario_datos.md">Diccionario de datos</a>
       <a href="docs/SECUENCIA_PROMPTS_ANALISIS_OPINION_REDES_2026-06-18.md">Secuencia de prompts</a>
-      <a href="https://docs.google.com/spreadsheets/d/19qCi8dMDZa89OrZhUth5EhQ0qvkrup6PaqTN3BN7NCc/edit">Google Sheet</a>
+      <a href="BITACORA.md">Bitacora</a>
     </section>
   </main>
+  <script src="docs/dashboard.js"></script>
 </body>
 </html>
-
