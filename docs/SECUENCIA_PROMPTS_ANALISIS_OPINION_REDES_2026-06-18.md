@@ -79,3 +79,4 @@ Respuesta operativa:
 - Se agrego `docs/status.json` como fuente publica sin secretos.
 - Se agrego exportador Python para regenerar el JSON desde cada corrida.
 - Se aclaro que el perfil personal no es accesible como Pagina por Meta API; el tablero actual cubre la Pagina de Facebook y deja sitio web/GA4 como fuente pendiente.
+- Se publico el tablero en GitHub Pages y se verifico la URL publica con `docs/status.json` respondiendo HTTP 200.

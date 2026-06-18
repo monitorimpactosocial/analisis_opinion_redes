@@ -160,3 +160,15 @@ Alcance aclarado:
 - El tablero reporta la Pagina de Facebook conectada por API.
 - El perfil personal no se puede monitorear como Pagina mediante Meta Graph API.
 - Para metricas de sitio web se debe conectar GA4, Search Console o logs del sitio.
+
+Verificacion ejecutada:
+- `python -m compileall src tests`: OK.
+- `$env:PYTHONPATH='src'; python -m unittest discover -s tests`: OK, 3 tests.
+- `python -m json.tool docs/status.json`: OK.
+- `node --check docs/dashboard.js`: OK.
+- Servidor local `python -m http.server 8765`: `index.html`, `docs/status.json` y `docs/dashboard.js` respondieron HTTP 200.
+- Corrida temporal con `DASHBOARD_STATUS_PATH=outputs/test_status.json`: OK, genero JSON con KPIs, sentimiento, categorias, tendencia, alertas y comentarios.
+- Commit publicado del tablero: `212d7e9ff610c7598fdf845162579b30139d7f6c`.
+- `git rev-parse HEAD` coincide con `git rev-parse origin/main`.
+- URL publica verificada: `https://monitorimpactosocial.github.io/analisis_opinion_redes/?v=212d7e9b` respondio HTTP 200 con el HTML nuevo.
+- Estado publico verificado: `https://monitorimpactosocial.github.io/analisis_opinion_redes/docs/status.json?v=212d7e9b` respondio HTTP 200 y `latest_run=collect_20260618T201224Z`.
