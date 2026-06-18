@@ -40,3 +40,19 @@
 - `local_path`: ruta local de ejecucion.
 - `sha256`: hash de integridad del archivo.
 
+## docs/status.json
+
+- `generated_at_utc`: fecha UTC de generacion del estado publico.
+- `scope_note`: alcance visible del tablero.
+- `meta_page`: pagina Meta conectada sin tokens.
+- `latest_run`: resumen de la ultima corrida.
+- `sentiment`: conteos agregados por sentimiento.
+- `categories`: categorias principales.
+- `trend`: serie diaria publicada.
+- `alerts`: alertas recientes sin datos sensibles de autor.
+- `comments`: comentarios recientes sin identificadores crudos de autor.
+- `destinations`: enlaces operativos a Sheet y Drive.
+- `automation.workflow_url`: enlace al workflow manual de actualizacion.
+- `automation.mode`: modo de actualizacion publicado.
+- `evidence`: evidencias publicas de la ultima corrida.
+- `security_note`: nota de seguridad del JSON publico.

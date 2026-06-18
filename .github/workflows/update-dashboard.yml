@@ -1,0 +1,91 @@
+name: Actualizar tablero
+
+on:
+  workflow_dispatch:
+    inputs:
+      since_days:
+        description: "Dias hacia atras para consultar en Meta"
+        required: true
+        default: "7"
+      write_google:
+        description: "Tambien escribir resultados en Google Sheets y Drive"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-dashboard
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: Descargar comentarios y publicar JSON
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION || 'v25.0' }}
+      META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+      META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+      META_PAGE_ACCESS_TOKEN: ${{ secrets.META_PAGE_ACCESS_TOKEN }}
+      META_PAGE_NAME: ${{ vars.META_PAGE_NAME || 'Monitorimpactosocial' }}
+      META_SINCE_DAYS: ${{ inputs.since_days }}
+      ANONYMIZATION_SALT: ${{ secrets.ANONYMIZATION_SALT || 'github-actions-change-me' }}
+      DASHBOARD_STATUS_PATH: docs/status.json
+      WRITE_GOOGLE: ${{ inputs.write_google }}
+      GOOGLE_SPREADSHEET_ID: ${{ secrets.GOOGLE_SPREADSHEET_ID || '19qCi8dMDZa89OrZhUth5EhQ0qvkrup6PaqTN3BN7NCc' }}
+      GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID || '1RGaWR4DJLrjHRNOoDEw7tdELaAYACcLd' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Preparar credenciales Google si corresponde
+        if: ${{ inputs.write_google }}
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::Falta el secret GOOGLE_SERVICE_ACCOUNT_JSON para escribir en Sheets/Drive."
+            exit 1
+          fi
+          credentials_path="$RUNNER_TEMP/google-service-account.json"
+          printf '%s' "$GOOGLE_SERVICE_ACCOUNT_JSON" > "$credentials_path"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$credentials_path" >> "$GITHUB_ENV"
+
+      - name: Ejecutar actualizacion
+        run: |
+          if [ -z "$META_ACCESS_TOKEN" ] || [ -z "$META_PAGE_ID" ]; then
+            echo "::error::Faltan secrets obligatorios: META_ACCESS_TOKEN y META_PAGE_ID."
+            exit 1
+          fi
+          python -m analisis_opinion_redes.cli validate-config
+          if [ "$WRITE_GOOGLE" = "true" ]; then
+            python -m analisis_opinion_redes.cli collect --write-google
+          else
+            python -m analisis_opinion_redes.cli collect
+          fi
+
+      - name: Publicar docs/status.json
+        run: |
+          if git diff --quiet -- docs/status.json; then
+            echo "docs/status.json no cambio."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/status.json
+          git commit -m "Update dashboard status from workflow"
+          git push

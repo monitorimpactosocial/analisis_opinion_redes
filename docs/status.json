@@ -54,6 +54,10 @@
     "spreadsheet_url": "https://docs.google.com/spreadsheets/d/19qCi8dMDZa89OrZhUth5EhQ0qvkrup6PaqTN3BN7NCc/edit",
     "drive_folder_url": "https://drive.google.com/drive/folders/1RGaWR4DJLrjHRNOoDEw7tdELaAYACcLd"
   },
+  "automation": {
+    "workflow_url": "https://github.com/monitorimpactosocial/analisis_opinion_redes/actions/workflows/update-dashboard.yml",
+    "mode": "github_actions_manual"
+  },
   "evidence": [
     {
       "type": "csv",

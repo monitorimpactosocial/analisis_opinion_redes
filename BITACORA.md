@@ -200,3 +200,25 @@ Pendiente:
 - Confirmar si el comentario fue en una publicacion real de la Pagina `Monitorimpactosocial` o en una resena/recomendacion.
 - Si fue resena/recomendacion, agregar/solicitar `pages_read_user_content` y regenerar token.
 - Publicar `docs/status.json` con el diagnostico actualizado.
+
+## 2026-06-18 - Boton de actualizacion desde la appweb
+
+Problema reportado:
+- El usuario pidio agregar un boton para ejecutar la actualizacion del tablero.
+
+Decision de seguridad:
+- No se ejecuta Meta Graph API desde el navegador porque eso expondria tokens.
+- El boton abre un workflow manual de GitHub Actions protegido por permisos del repositorio.
+
+Cambios:
+- `index.html` agrega botones **Actualizar datos** y **Configurar**.
+- `.github/workflows/update-dashboard.yml` crea la accion manual `Actualizar tablero`.
+- `docs/dashboard.js` puede leer `automation.workflow_url` desde `docs/status.json`.
+- `src/analisis_opinion_redes/dashboard_export.py` agrega metadatos `automation` al JSON publico.
+- `docs/actualizar_datos.md` documenta uso, secrets y restricciones.
+- `README.md`, `docs/manual_tecnico.md`, `docs/diccionario_datos.md` y la secuencia de prompts quedaron actualizados.
+
+Pendiente operativo:
+- Cargar en GitHub Secrets `META_ACCESS_TOKEN` y `META_PAGE_ID`.
+- Cargar `META_PAGE_ACCESS_TOKEN` y `ANONYMIZATION_SALT` como recomendados.
+- Para escritura en Sheets/Drive desde Actions, cargar `GOOGLE_SERVICE_ACCOUNT_JSON` y ejecutar con `write_google=true`.

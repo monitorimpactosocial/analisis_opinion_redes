@@ -15,6 +15,11 @@ function setText(id, value) {
   if (node && value !== undefined && value !== null) node.textContent = value;
 }
 
+function setHref(id, value) {
+  const node = document.getElementById(id);
+  if (node && value) node.href = value;
+}
+
 function formatPercent(value, total) {
   if (!total) return "0%";
   return `${Math.round((value / total) * 100)}%`;
@@ -184,6 +189,7 @@ loadStatus().then((status) => {
   setText("diagnostic-detail", status.diagnostic?.detail);
   setText("next-step-title", status.next_step?.title);
   setText("next-step-detail", status.next_step?.detail);
+  setHref("update-dashboard-link", status.automation?.workflow_url);
   renderSentiment(sentiment);
   renderBars("category-bars", status.categories, "Sin categorias todavia.");
   renderTrend(status.trend);

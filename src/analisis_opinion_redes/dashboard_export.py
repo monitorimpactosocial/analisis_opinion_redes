@@ -80,6 +80,10 @@ def build_public_status(
             "spreadsheet_url": f"https://docs.google.com/spreadsheets/d/{settings.google_spreadsheet_id}/edit",
             "drive_folder_url": f"https://drive.google.com/drive/folders/{settings.google_drive_folder_id}",
         },
+        "automation": {
+            "workflow_url": "https://github.com/monitorimpactosocial/analisis_opinion_redes/actions/workflows/update-dashboard.yml",
+            "mode": "github_actions_manual",
+        },
         "evidence": build_evidence_rows(artifacts),
         "security_note": "No contiene tokens, passwords ni identificadores crudos de autores.",
     }

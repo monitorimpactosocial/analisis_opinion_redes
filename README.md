@@ -25,6 +25,7 @@ La URL publica muestra un tablero operativo con:
 - Graficas de sentimiento, categorias y tendencia diaria.
 - Tabla de alertas y comentarios recientes.
 - Enlaces al Google Sheet, Drive de evidencias, repositorio y estado JSON.
+- Boton **Actualizar datos** que abre una ejecucion manual protegida en GitHub Actions.
 
 El tablero no guarda tokens ni contrasenas. Se actualiza desde `docs/status.json`, generado por cada corrida del pipeline.
 
@@ -74,6 +75,22 @@ python -m analisis_opinion_redes.cli collect --write-google
 ```
 
 Cada corrida tambien actualiza `docs/status.json` para alimentar el tablero publico. Para publicar el tablero actualizado en GitHub Pages hay que commitear y pushear ese JSON junto con cualquier cambio de codigo o documentacion.
+
+## Actualizacion desde la appweb
+
+El boton **Actualizar datos** del tablero abre el workflow manual `Actualizar tablero` en GitHub Actions. Ese workflow ejecuta `collect`, regenera `docs/status.json`, commitea el cambio y lo pushea a `main` para que GitHub Pages lo publique.
+
+Secrets minimos en GitHub:
+
+- `META_ACCESS_TOKEN`
+- `META_PAGE_ID`
+
+Secrets recomendados:
+
+- `META_PAGE_ACCESS_TOKEN`
+- `ANONYMIZATION_SALT`
+
+Para escribir tambien en Google Sheets/Drive desde GitHub Actions se debe activar `write_google=true` y cargar `GOOGLE_SERVICE_ACCOUNT_JSON`. Ver `docs/actualizar_datos.md`.
 
 ## Estructura de Google Sheet
 

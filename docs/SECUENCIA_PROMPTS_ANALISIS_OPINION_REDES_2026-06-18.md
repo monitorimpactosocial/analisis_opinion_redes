@@ -92,3 +92,14 @@ Respuesta operativa:
 - Se consultaron endpoints directos: `feed`, `posts`, `published_posts`, `visitor_posts` y `ratings`.
 - Diagnostico: feed/posts/visitor_posts devolvieron 0; ratings requiere `pages_read_user_content`.
 - Se preparo el tablero para mostrar esta ultima corrida y el diagnostico.
+
+## Prompt 9
+
+El usuario pidio agregar un boton a la app para ejecutar la actualizacion.
+
+Respuesta operativa:
+- Se agrego el boton **Actualizar datos** al tablero publico.
+- Se creo el workflow manual `.github/workflows/update-dashboard.yml`.
+- El workflow usa GitHub Secrets para Meta, ejecuta `collect`, regenera `docs/status.json`, lo commitea y lo pushea.
+- Se documento el uso en `docs/actualizar_datos.md`, `README.md`, `docs/manual_tecnico.md` y `docs/diccionario_datos.md`.
+- Se mantuvo la actualizacion protegida: el frontend no contiene tokens ni llama directamente a Meta.
