@@ -80,3 +80,15 @@ Respuesta operativa:
 - Se agrego exportador Python para regenerar el JSON desde cada corrida.
 - Se aclaro que el perfil personal no es accesible como Pagina por Meta API; el tablero actual cubre la Pagina de Facebook y deja sitio web/GA4 como fuente pendiente.
 - Se publico el tablero en GitHub Pages y se verifico la URL publica con `docs/status.json` respondiendo HTTP 200.
+
+## Prompt 8
+
+El usuario creo un comentario positivo con otro usuario y pregunto como se actualiza la appweb porque no aparecia.
+
+Respuesta operativa:
+- Se explico que GitHub Pages es estatico: hay que correr `collect`, regenerar `docs/status.json`, commitear y pushear.
+- Se ejecuto `collect` con `META_SINCE_DAYS=7`.
+- Resultado `collect_20260618T205625Z`: 0 comentarios.
+- Se consultaron endpoints directos: `feed`, `posts`, `published_posts`, `visitor_posts` y `ratings`.
+- Diagnostico: feed/posts/visitor_posts devolvieron 0; ratings requiere `pages_read_user_content`.
+- Se preparo el tablero para mostrar esta ultima corrida y el diagnostico.

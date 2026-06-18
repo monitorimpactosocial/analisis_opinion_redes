@@ -172,3 +172,31 @@ Verificacion ejecutada:
 - `git rev-parse HEAD` coincide con `git rev-parse origin/main`.
 - URL publica verificada: `https://monitorimpactosocial.github.io/analisis_opinion_redes/?v=212d7e9b` respondio HTTP 200 con el HTML nuevo.
 - Estado publico verificado: `https://monitorimpactosocial.github.io/analisis_opinion_redes/docs/status.json?v=212d7e9b` respondio HTTP 200 y `latest_run=collect_20260618T201224Z`.
+
+## 2026-06-18 - Reintento tras comentario positivo de prueba
+
+Problema reportado:
+- El usuario creo un comentario positivo con otro usuario, pero no aparecio en la appweb.
+
+Accion:
+- Se ejecuto `$env:PYTHONPATH='src'; $env:META_SINCE_DAYS='7'; python -m analisis_opinion_redes.cli collect`.
+- Corrida generada: `collect_20260618T205625Z`.
+- Resultado: 0 comentarios, 0 alertas.
+- `docs/status.json` fue actualizado localmente con la nueva corrida.
+
+Diagnostico API:
+- `/{page-id}/feed`: 0 elementos.
+- `/{page-id}/posts`: 0 elementos.
+- `/{page-id}/published_posts`: 0 elementos.
+- `/{page-id}/visitor_posts`: 0 elementos.
+- `/{page-id}/ratings`: error `(#283) Requires pages_read_user_content permission to manage the object`.
+- Permisos actuales del token: `pages_show_list`, `business_management`, `pages_read_engagement`, `public_profile`.
+
+Conclusion:
+- La appweb se actualiza corriendo `collect` y publicando `docs/status.json`, pero Meta no esta devolviendo ese comentario por los endpoints habilitados.
+- Si el comentario esta debajo de una publicacion visible de la Pagina, deberia aparecer por `feed/posts`; si fue una resena/recomendacion, falta `pages_read_user_content`.
+
+Pendiente:
+- Confirmar si el comentario fue en una publicacion real de la Pagina `Monitorimpactosocial` o en una resena/recomendacion.
+- Si fue resena/recomendacion, agregar/solicitar `pages_read_user_content` y regenerar token.
+- Publicar `docs/status.json` con el diagnostico actualizado.
