@@ -53,3 +53,20 @@ Pendientes reales:
 - Crear/autorizar app Meta y completar token local.
 - Confirmar `META_PAGE_ID` de la pagina administrada.
 - Configurar credenciales Google locales si el pipeline se ejecutara fuera de Codex.
+
+## 2026-06-18 - Correccion de GitHub Pages 404
+
+Problema reportado:
+- Al acceder por GitHub Pages, la raiz publica o la ruta `/docs/` podia devolver `404 File not found`.
+- El repositorio tenia README y documentos Markdown, pero no tenia `index.html` para la fuente publicada por Pages.
+
+Cambios:
+- Se agrego `index.html` en la raiz para Pages configurado desde `/`.
+- Se agrego `docs/index.html` para Pages configurado desde `/docs`.
+- Se agrego `docs/404.html` para una pantalla de error util.
+- Se agrego `docs/docs/index.html` como alias defensivo si el usuario entra a `/docs/` mientras Pages publica desde la carpeta `docs`.
+- Se agrego `docs/site.css` para una portada liviana con enlaces a manuales, credenciales, diccionario, secuencia de prompts y Google Sheet.
+
+Verificacion prevista:
+- `git status --branch --short`.
+- Publicar commit y revalidar `https://monitorimpactosocial.github.io/analisis_opinion_redes/` y `https://monitorimpactosocial.github.io/analisis_opinion_redes/docs/` tras propagacion de GitHub Pages.

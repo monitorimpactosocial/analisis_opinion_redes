@@ -30,3 +30,14 @@ Respuesta operativa:
 - 2 alertas generadas.
 - 3 archivos de evidencia subidos a Drive.
 - Descarga real de Facebook pendiente hasta configurar token OAuth y `META_PAGE_ID`.
+
+## Prompt 4
+
+El usuario reporto que al acceder al enlace principal ve el README, pero al entrar por `docs` GitHub Pages devuelve `404 File not found`.
+
+Respuesta operativa:
+- Se diagnostico falta de `index.html` para GitHub Pages.
+- Se agrego portada en la raiz del repo.
+- Se agrego indice en `docs/index.html`.
+- Se agrego `docs/404.html` y alias `docs/docs/index.html` para cubrir rutas comunes.
+- Se dejo pendiente verificar la URL publica luego del push y la propagacion de GitHub Pages.
