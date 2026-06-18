@@ -42,3 +42,15 @@ Respuesta operativa:
 - Se agrego `docs/404.html` y alias `docs/docs/index.html` para cubrir rutas comunes.
 - Se verifico que los HTML existen en `main` por raw GitHub con HTTP 200.
 - La URL `monitorimpactosocial.github.io/analisis_opinion_redes/` seguia en HTTP 404, por lo que falta habilitar/configurar GitHub Pages o esperar activacion.
+
+## Prompt 5
+
+El usuario indico que ya tenia el token de Meta en el portapapeles.
+
+Respuesta operativa:
+- Se cargo el token en `.env` local sin imprimirlo ni commitearlo.
+- El token valido el usuario `Diego Meza`.
+- `/me/accounts` devolvio `pages: []`.
+- `/me/permissions` mostro `pages_show_list`, `business_management`, `pages_read_engagement` y `public_profile`.
+- `/me/businesses` devolvio lista vacia.
+- Diagnostico: falta acceso efectivo a una Pagina o regenerar token incluyendo `pages_read_user_content`; aun no se puede ejecutar `collect` real.

@@ -82,3 +82,26 @@ Verificacion ejecutada:
 Diagnostico:
 - El contenido necesario ya esta en `main`.
 - La URL publica todavia requiere habilitar/configurar GitHub Pages para este repositorio o esperar su activacion.
+
+## 2026-06-18 - Validacion inicial de token Meta
+
+Accion:
+- Se creo `.env` local desde `.env.example`.
+- Se cargo `META_ACCESS_TOKEN` desde el portapapeles sin imprimir el token.
+- `.env` permanece ignorado por git.
+
+Comandos/verificaciones:
+- `python -m analisis_opinion_redes.cli validate-config`: OK, token presente pero falta `META_PAGE_ID`.
+- `python -m analisis_opinion_redes.cli list-pages`: token valido para el usuario `Diego Meza`, pero `pages` devolvio lista vacia.
+- Consulta `/me/permissions`: concedidos `pages_show_list`, `business_management`, `pages_read_engagement`, `public_profile`.
+- Consulta `/me/businesses`: lista vacia.
+
+Diagnostico:
+- El token es valido como token de usuario, pero no expone ninguna Pagina administrada.
+- Falta conceder `pages_read_user_content` para leer comentarios generados por usuarios.
+- Tambien falta que el usuario/token tenga acceso efectivo a una Pagina de Facebook, o usar la cuenta que tenga control total de la Pagina.
+
+Pendiente:
+- Regenerar el token en Graph API Explorer con `pages_show_list`, `pages_read_engagement` y `pages_read_user_content`.
+- Confirmar que `/me/accounts?fields=id,name,tasks` devuelva al menos una Pagina.
+- Luego completar `META_PAGE_ID` en `.env` y ejecutar `collect`.
