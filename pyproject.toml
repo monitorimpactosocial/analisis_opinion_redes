@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "analisis-opinion-redes"
+version = "0.1.0"
+description = "Ensayo de descarga y analisis de comentarios de redes sociales con Meta Graph API y Google Sheets."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "requests>=2.32.0",
+  "google-api-python-client>=2.130.0",
+  "google-auth>=2.29.0"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[project.scripts]
+analisis-redes = "analisis_opinion_redes.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+

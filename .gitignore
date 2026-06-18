@@ -1,0 +1,16 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+outputs/
+evidence/
+data/
+*.log
+*.secret
+client_secret*.json
+service_account*.json
+token*.json
+
