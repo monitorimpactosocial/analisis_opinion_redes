@@ -10,6 +10,7 @@ Ensayo operativo para descargar comentarios diarios desde Meta Graph API, analiz
 ## Alcance inicial
 
 - Facebook Pages administradas por el usuario mediante Meta Graph API.
+- Archivos exportados manualmente cuando Meta bloquee permisos de lectura de comentarios.
 - Comentarios de publicaciones de pagina, no scraping ni login automatizado.
 - Analisis simple: sentimiento, tema, urgencia y necesidad de respuesta.
 - Persistencia local en `outputs/` y opcional en Google Sheets/Drive.
@@ -33,6 +34,7 @@ Limitaciones actuales:
 
 - El perfil personal no se puede monitorear como si fuera una Pagina mediante la API oficial.
 - Para trafico de una pagina web real se necesita conectar GA4, Search Console o logs del sitio.
+- Si Meta no concede `pages_read_user_content`, usar el modo `import-file` con archivos exportados.
 
 ## Instalacion local
 
@@ -75,6 +77,19 @@ python -m analisis_opinion_redes.cli collect --write-google
 ```
 
 Cada corrida tambien actualiza `docs/status.json` para alimentar el tablero publico. Para publicar el tablero actualizado en GitHub Pages hay que commitear y pushear ese JSON junto con cualquier cambio de codigo o documentacion.
+
+## Ensayo con archivos exportados
+
+Guardar el export real en una carpeta ignorada, por ejemplo `data/imports/`, y ejecutar:
+
+```powershell
+$env:PYTHONPATH="src"
+python -m analisis_opinion_redes.cli import-file --input "data\imports\comentarios_facebook_2026-06-19.csv" --source-account Monitorimpactosocial
+```
+
+El importador acepta CSV, TSV, TXT, JSON y JSONL. Reconoce columnas como `comentario`, `message`, `texto`, `fecha`, `created_time`, `autor`, `post_url`, `likes` y `respuestas`.
+
+Hay una muestra ficticia en `samples/exported_comments_sample.csv`. Ver `docs/importar_exportados.md`.
 
 ## Actualizacion desde la appweb
 

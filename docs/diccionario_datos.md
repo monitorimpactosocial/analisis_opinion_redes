@@ -23,6 +23,21 @@
 - `needs_response`: indicador de seguimiento.
 - `matched_keywords`: palabras que dispararon reglas.
 
+## Archivo Exportado
+
+Columnas minimas recomendadas:
+
+- `fecha`: fecha/hora del comentario.
+- `red`: facebook, instagram u otra fuente.
+- `pagina`: pagina, perfil o cuenta exportada.
+- `post_url`: enlace de publicacion si existe.
+- `comentario`: texto del comentario.
+- `autor`: nombre o identificador de autor; se usa solo para hash si `STORE_AUTHOR_NAME=false`.
+- `likes`: reacciones si existen.
+- `respuestas`: respuestas al comentario si existen.
+
+El importador tambien reconoce equivalentes en ingles como `message`, `created_time`, `source_account`, `author`, `like_count` y `reply_count`.
+
 ## METRICAS_DIARIAS
 
 - `comments_total`: total de comentarios por dia/red/cuenta.

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from .analyzer import analyze_comment
 from .config import Settings
+from .file_importer import load_exported_comments
 from .models import AnalyzedComment, RawComment
 
 
@@ -62,6 +63,16 @@ def collect_from_meta(settings: Settings) -> list[RawComment]:
         limit_posts=settings.meta_limit_posts,
         limit_comments_per_post=settings.meta_limit_comments_per_post,
         page_access_token=settings.meta_page_access_token,
+    )
+
+
+def import_from_file(path: Path, settings: Settings, network: str, source_account: str) -> list[RawComment]:
+    return load_exported_comments(
+        path,
+        network=network,
+        source_account=source_account,
+        salt=settings.anonymization_salt,
+        store_author_name=settings.store_author_name,
     )
 
 
@@ -229,12 +240,24 @@ def write_google_outputs(
     return notes
 
 
-def run_pipeline(source: str, settings: Settings, sample_path: Path | None = None, write_google: bool = False) -> dict:
+def run_pipeline(
+    source: str,
+    settings: Settings,
+    sample_path: Path | None = None,
+    import_path: Path | None = None,
+    import_network: str = "facebook",
+    import_source_account: str = "archivo_exportado",
+    write_google: bool = False,
+) -> dict:
     run_id = make_run_id(source)
     if source == "sample":
         comments = load_sample(sample_path or Path("samples/facebook_comments_sample.json"))
     elif source == "collect":
         comments = collect_from_meta(settings)
+    elif source == "import_file":
+        if import_path is None:
+            raise ValueError("--input is required for import-file mode.")
+        comments = import_from_file(import_path, settings, import_network, import_source_account)
     else:
         raise ValueError(f"Unknown source: {source}")
 

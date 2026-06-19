@@ -34,11 +34,7 @@ def build_public_status(
 
     return {
         "generated_at_utc": utc_timestamp(),
-        "scope_note": (
-            "Este tablero reporta la Pagina de Facebook conectada por API. "
-            "El perfil personal no es accesible por la API oficial; para sitio web "
-            "se requiere conectar GA4/Search Console."
-        ),
+        "scope_note": build_scope_note(source),
         "meta_page": {
             "id": settings.meta_page_id or "",
             "name": page_name,
@@ -74,8 +70,8 @@ def build_public_status(
         "trend": daily,
         "alerts": alerts,
         "comments": comments,
-        "diagnostic": build_diagnostic(comments_total, posts_visible, settings.meta_ready()),
-        "next_step": build_next_step(comments_total, posts_visible),
+        "diagnostic": build_diagnostic(comments_total, posts_visible, settings.meta_ready(), source),
+        "next_step": build_next_step(comments_total, posts_visible, source),
         "destinations": {
             "spreadsheet_url": f"https://docs.google.com/spreadsheets/d/{settings.google_spreadsheet_id}/edit",
             "drive_folder_url": f"https://drive.google.com/drive/folders/{settings.google_drive_folder_id}",
@@ -142,7 +138,30 @@ def public_alert_row(item: AnalyzedComment) -> dict:
     return row
 
 
-def build_diagnostic(comments_total: int, posts_visible: int | None, meta_ready: bool) -> dict:
+def build_scope_note(source: str) -> str:
+    if source == "import_file":
+        return (
+            "Este tablero reporta comentarios cargados desde archivos exportados manualmente. "
+            "No depende del permiso pages_read_user_content de Meta para esta corrida."
+        )
+    return (
+        "Este tablero reporta la Pagina de Facebook conectada por API. "
+        "El perfil personal no es accesible por la API oficial; para sitio web "
+        "se requiere conectar GA4/Search Console."
+    )
+
+
+def build_diagnostic(comments_total: int, posts_visible: int | None, meta_ready: bool, source: str) -> dict:
+    if source == "import_file":
+        if comments_total > 0:
+            return {
+                "title": "Archivo exportado cargado",
+                "detail": "El tablero ya refleja comentarios importados desde archivo y clasificados por sentimiento, categoria y urgencia.",
+            }
+        return {
+            "title": "Archivo exportado sin comentarios",
+            "detail": "El archivo se proceso, pero no se detectaron filas con texto de comentario.",
+        }
     if not meta_ready:
         return {
             "title": "Faltan credenciales Meta",
@@ -164,7 +183,17 @@ def build_diagnostic(comments_total: int, posts_visible: int | None, meta_ready:
     }
 
 
-def build_next_step(comments_total: int, posts_visible: int | None) -> dict:
+def build_next_step(comments_total: int, posts_visible: int | None, source: str) -> dict:
+    if source == "import_file":
+        if comments_total > 0:
+            return {
+                "title": "Revisar alertas importadas",
+                "detail": "Usar las tablas del tablero para priorizar respuestas y repetir la importacion cuando exista un nuevo export.",
+            }
+        return {
+            "title": "Revisar columnas del export",
+            "detail": "Confirmar que el archivo tenga una columna de texto como message, comentario, texto o content.",
+        }
     if comments_total > 0:
         return {
             "title": "Revisar alertas",

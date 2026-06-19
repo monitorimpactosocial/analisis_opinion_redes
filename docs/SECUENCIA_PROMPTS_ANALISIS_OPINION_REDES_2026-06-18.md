@@ -103,3 +103,15 @@ Respuesta operativa:
 - El workflow usa GitHub Secrets para Meta, ejecuta `collect`, regenera `docs/status.json`, lo commitea y lo pushea.
 - Se documento el uso en `docs/actualizar_datos.md`, `README.md`, `docs/manual_tecnico.md` y `docs/diccionario_datos.md`.
 - Se mantuvo la actualizacion protegida: el frontend no contiene tokens ni llama directamente a Meta.
+
+## Prompt 10
+
+El usuario decidio cambiar de estrategia y usar archivos exportados por el bloqueo de `pages_read_user_content`.
+
+Respuesta operativa:
+- Se agrego el comando `import-file` para CSV, TSV, TXT, JSON y JSONL.
+- Se agrego `src/analisis_opinion_redes/file_importer.py` con mapeo tolerante de columnas en espanol e ingles.
+- Se agrego `samples/exported_comments_sample.csv` con datos ficticios.
+- Se agrego `docs/importar_exportados.md`.
+- Se actualizaron README, manual tecnico, diccionario de datos y enlaces del tablero.
+- Se verifico una corrida de prueba con `samples/exported_comments_sample.csv`: 3 comentarios, 2 alertas.

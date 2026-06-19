@@ -222,3 +222,28 @@ Pendiente operativo:
 - Cargar en GitHub Secrets `META_ACCESS_TOKEN` y `META_PAGE_ID`.
 - Cargar `META_PAGE_ACCESS_TOKEN` y `ANONYMIZATION_SALT` como recomendados.
 - Para escritura en Sheets/Drive desde Actions, cargar `GOOGLE_SERVICE_ACCOUNT_JSON` y ejecutar con `write_google=true`.
+
+## 2026-06-19 - Estrategia con archivos exportados
+
+Problema reportado:
+- El permiso `pages_read_user_content` no quedo disponible para leer comentarios por API.
+- El usuario pidio cambiar la estrategia y usar archivos exportados.
+
+Cambios:
+- Se agrego `src/analisis_opinion_redes/file_importer.py`.
+- Se agrego el comando `python -m analisis_opinion_redes.cli import-file`.
+- Se soportan CSV, TSV, TXT, JSON y JSONL.
+- Se reconocen columnas comunes en espanol e ingles: `comentario`, `message`, `texto`, `fecha`, `created_time`, `autor`, `post_url`, `likes`, `respuestas`.
+- Se agrego `samples/exported_comments_sample.csv` con datos ficticios.
+- Se agrego `docs/importar_exportados.md`.
+- Se actualizo el tablero con enlace a la guia de importacion.
+- Se actualizaron `README.md`, `docs/manual_tecnico.md`, `docs/diccionario_datos.md` y la secuencia de prompts.
+
+Verificacion ejecutada:
+- `$env:PYTHONPATH='src'; python -m unittest discover -s tests`: OK, 5 tests.
+- `$env:PYTHONPATH='src'; $env:DASHBOARD_STATUS_PATH='outputs/test_import_status.json'; python -m analisis_opinion_redes.cli import-file --input samples/exported_comments_sample.csv --source-account Monitorimpactosocial`: OK, 3 comentarios, 2 alertas.
+- `python -m json.tool outputs/test_import_status.json`: OK.
+
+Pendiente:
+- Recibir un export real en `data/imports/` u otra ruta local ignorada por git.
+- Ejecutar `import-file` sobre ese archivo y publicar `docs/status.json`.

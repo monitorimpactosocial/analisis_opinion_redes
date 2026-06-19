@@ -46,6 +46,16 @@ def main(argv: list[str] | None = None) -> int:
     collect = subparsers.add_parser("collect", help="Descarga comentarios reales desde Meta Graph API.")
     collect.add_argument("--write-google", action="store_true")
 
+    import_file = subparsers.add_parser("import-file", help="Importa comentarios desde un archivo exportado.")
+    import_file.add_argument("--input", required=True, help="Ruta del CSV, TSV, JSON o JSONL exportado.")
+    import_file.add_argument("--network", default="facebook", help="Red social a registrar si el archivo no trae columna.")
+    import_file.add_argument(
+        "--source-account",
+        default="archivo_exportado",
+        help="Cuenta o pagina a registrar si el archivo no trae columna.",
+    )
+    import_file.add_argument("--write-google", action="store_true")
+
     subparsers.add_parser("validate-config", help="Muestra configuracion sin revelar secretos.")
     subparsers.add_parser("list-pages", help="Lista paginas administradas visibles para el token.")
 
@@ -69,9 +79,19 @@ def main(argv: list[str] | None = None) -> int:
         result = run_pipeline("collect", settings, write_google=args.write_google)
         print(json.dumps(result, indent=2, ensure_ascii=False))
         return 0
+    if args.command == "import-file":
+        result = run_pipeline(
+            "import_file",
+            settings,
+            import_path=Path(args.input),
+            import_network=args.network,
+            import_source_account=args.source_account,
+            write_google=args.write_google,
+        )
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+        return 0
     return 1
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

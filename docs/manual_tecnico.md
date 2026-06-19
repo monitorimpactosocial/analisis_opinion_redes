@@ -2,13 +2,13 @@
 
 ## Objetivo
 
-Automatizar un ensayo diario de comentarios en Facebook Pages con Meta Graph API, analisis simple y escritura en Google Sheets/Drive.
+Automatizar un ensayo diario de comentarios en Facebook Pages o archivos exportados, con analisis simple y escritura en Google Sheets/Drive.
 
 ## Flujo
 
 1. Validar configuracion local.
-2. Descargar publicaciones recientes de una pagina.
-3. Descargar comentarios de esas publicaciones.
+2. Descargar publicaciones recientes de una pagina o leer un archivo exportado.
+3. Descargar o importar comentarios.
 4. Anonimizar autor por hash.
 5. Analizar sentimiento, categoria, urgencia y necesidad de respuesta.
 6. Guardar JSONL, CSV, metricas y evidencia local.
@@ -26,6 +26,23 @@ Automatizar un ensayo diario de comentarios en Facebook Pages con Meta Graph API
 - `GOOGLE_SPREADSHEET_ID`: workbook de resultados.
 - `GOOGLE_DRIVE_FOLDER_ID`: carpeta de evidencias.
 - `DASHBOARD_STATUS_PATH`: ruta del JSON publico del tablero, por defecto `docs/status.json`.
+
+## Importacion de archivos exportados
+
+El modo `import-file` permite seguir operando sin `pages_read_user_content`.
+
+```powershell
+$env:PYTHONPATH="src"
+python -m analisis_opinion_redes.cli import-file --input "data\imports\comentarios.csv" --source-account Monitorimpactosocial
+```
+
+Formatos: CSV, TSV, TXT, JSON y JSONL.
+
+Columnas de texto reconocidas: `message`, `comment`, `comentario`, `texto`, `content`, `opinion`.
+
+Columnas de fecha reconocidas: `created_time`, `comment_created_at`, `created_at`, `fecha`, `fecha_comentario`, `timestamp`.
+
+Los archivos reales deben quedar en `data/` u otra ruta ignorada por git.
 
 ## Tablero publico
 
@@ -68,6 +85,7 @@ $env:PYTHONPATH="src"
 python -m unittest discover -s tests
 python -m analisis_opinion_redes.cli validate-config
 python -m analisis_opinion_redes.cli sample
+python -m analisis_opinion_redes.cli import-file --input samples/exported_comments_sample.csv --source-account Monitorimpactosocial
 node --check docs/dashboard.js
 python -m json.tool docs/status.json
 ```
@@ -76,4 +94,5 @@ python -m json.tool docs/status.json
 
 - No descarga comentarios de perfiles personales mediante password.
 - Requiere permisos de Meta y, para produccion, posible App Review.
+- Sin `pages_read_user_content`, la fuente operativa recomendada es `import-file`.
 - La calidad del modelo inicial es basica; sirve para clasificacion operativa preliminar.
